@@ -1,53 +1,36 @@
-const productsList = require("../data/productos");
-const errInvalidID = { error: "El ID ingresado no corresponde" };
+const { productsDao } = require("../daos/index");
 
 const getProducts = async (req, res) => {
-  const { id } = req.params;
+    const { id } = req.params;
 
-  if (id && isNaN(id)) {
-    res.status(400).json(errInvalidID);
-    return;
-  }
-
-  let response;
-  if (id) response = await productsList.getOneProduct(id);
-  else response = await productsList.getAllProducts();
-
-  res.json(response);
+    const response = id
+        ? await productsDao.find(id)
+        : await productsDao.findAll();
+    res.json(response);
 };
 
 const postProduct = async (req, res) => {
-  const response = await productsList.createProduct(req.body);
-  res.json(response);
+    const response = await productsDao.save(req.body);
+    res.json(response);
 };
 
 const putProduct = async (req, res) => {
-  const { id } = req.params;
+    const { id } = req.params;
 
-  if (isNaN(id)) {
-    res.status(400).json(errInvalidID);
-    return;
-  }
-
-  const response = await productsList.updateProduct(id, req.body);
-  res.json(response);
+    const response = await productsDao.update(id, req.body);
+    res.json(response);
 };
 
 const delproduct = async (req, res) => {
-  const { id } = req.params;
+    const { id } = req.params;
 
-  if (isNaN(id)) {
-    res.status(400).json(errInvalidID);
-    return;
-  }
-
-  const response = await productsList.deleteProduct(id);
-  res.json(response);
+    const response = await productsDao.delete(id);
+    res.json(response);
 };
 
 module.exports = {
-  getProducts,
-  postProduct,
-  putProduct,
-  delproduct,
+    getProducts,
+    postProduct,
+    putProduct,
+    delproduct,
 };
