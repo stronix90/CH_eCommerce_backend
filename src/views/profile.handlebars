@@ -1,0 +1,13 @@
+<h1>Perfil</h1>
+
+<a href="/logout">Cerrar sesión</a>
+
+    
+    {{#if user}}
+        <div class="profile">
+            <img src="{{user.photo}}" alt="{{user.name}}">
+            <h5>{{user.name}}</h5>
+            <p>{{user.email}}</p>
+        </div>
+    {{/if}}
+    

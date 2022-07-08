@@ -4,13 +4,13 @@ const {
   putProduct,
   delproduct,
 } = require("../controllers/productos.controller");
-const onlyAdmin = require("../middleware/middleware");
+const { isAuth } = require("../middleware/auth");
 
 const router = require("express").Router();
 
 router.get("/:id?", getProducts);
-router.post("/", onlyAdmin, postProduct);
-router.put("/:id", onlyAdmin, putProduct);
-router.delete("/:id", onlyAdmin, delproduct);
+router.post("/", isAuth, postProduct);
+router.put("/:id", isAuth, putProduct);
+router.delete("/:id", isAuth, delproduct);
 
 module.exports = router;

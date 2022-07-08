@@ -1,9 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const { engine } = require("express-handlebars");
+const path = require("path");
+const session = require("express-session");
+const passport = require("passport");
 
-const productosRoutes = require("./routes/productos.routes");
-const carritoRoutes = require("./routes/carrito.routes");
+require("./auth/passport/localAuth");
+require("./utils/mailer")
 
 // Inicio aplicación
 const app = express();
@@ -12,21 +16,30 @@ const app = express();
 const port = process.env.PORT || 8080;
 app.set("port", port);
 
+app.engine(".handlebars", engine());
+// app.set("view engine", "hbs");
+app.set("view engine", "handlebars");
+app.set("views", path.join(__dirname, "/views"));
+
 // Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(morgan("tiny"));
+app.use(
+    session({
+        secret: "fraseSecretaSt",
+        resave: true,
+        rolling: true,
+        saveUninitialized: false,
+        cookie: { maxAge: 1000 * 60 * 10 },
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
-app.use("/api/productos", productosRoutes);
-app.use("/api/carrito", carritoRoutes);
-app.use("*", function (req, res) {
-  res.status(404).json({
-    error: -2,
-    descripcion: `El recurso [${req.method}] ${req.originalUrl} no está implementado`,
-  });
-});
+app.use("/", require("./routes"));
 
-module.exports = app
+module.exports = app;

@@ -1,5 +1,6 @@
 let cartDao;
 let productsDao;
+let userDao;
 
 switch (process.env.PERSISTENCIA) {
     case "file":
@@ -12,9 +13,14 @@ switch (process.env.PERSISTENCIA) {
 
     case "mongo":
         const CartDaoMongo = require("./cart/CartDaoMongo");
-        const ProductDaoMongo = require("./product/ProductDaoMongo");
         cartDao = new CartDaoMongo();
+
+        const ProductDaoMongo = require("./product/ProductDaoMongo");
         productsDao = new ProductDaoMongo();
+
+        const UserDaoMongo = require("./user/UserDaoMongo");
+        userDao = new UserDaoMongo();
+
         break;
 
     case "firebase":
@@ -32,4 +38,4 @@ switch (process.env.PERSISTENCIA) {
         break;
 }
 
-module.exports = { cartDao, productsDao };
+module.exports = { cartDao, productsDao, userDao };
