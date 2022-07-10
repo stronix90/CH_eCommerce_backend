@@ -2,11 +2,11 @@ const err_cantSave = { ErrorMsg: "Error al guardar el archivo" };
 const err_cantDelete = { ErrorMsg: "Error al eliminar" };
 
 const mongoose = require("mongoose");
-const config = require("../config");
+const dbConfig = require("../config/db");
 const { errorHandler } = require("../utils/utils");
 
 (async () => {
-    await mongoose.connect(config.mongodb.conn);
+    await mongoose.connect(dbConfig.mongodb.conn);
 })();
 
 class CantainerMongo {
@@ -34,7 +34,7 @@ class CantainerMongo {
     save = async (elem) => {
         try {
             const newElem = await this.coll.create(elem);
-            return newElem.id;
+            return newElem._doc;
         } catch (error) {
             return errorHandler("Falla al guardar", error);
         }

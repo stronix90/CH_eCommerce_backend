@@ -33,7 +33,8 @@ passport.use(
             };
 
             const createdUser = await userDao.save(newUser);
-            return done(null, createdUser);
+            delete createdUser.password;
+            return done(null, createdUser );
         }
     )
 );
@@ -58,8 +59,8 @@ passport.use(
     )
 );
 
-passport.serializeUser((id, done) => {
-    done(null, id);
+passport.serializeUser((user, done) => {
+    done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {

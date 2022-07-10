@@ -22,6 +22,18 @@ class ProductDaoMongo extends ContainerMongo {
             )
         );
     }
+
+    findById = async (id, readyForCart = false) => {
+        const product = await this.find(id);
+
+        if (readyForCart) {
+            delete product.descripcion;
+            delete product.stock;
+            delete product.thumbnail;
+        }
+
+        return product;
+    };
 }
 
 module.exports = ProductDaoMongo;

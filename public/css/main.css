@@ -10,6 +10,7 @@ body {
     background: var(--bg1);
     background: -webkit-linear-gradient(to right, var(--bg2), var(--bg1));
     background: linear-gradient(to right, var(--bg2), var(--bg1));
+
 }
 
 .productImage {
@@ -25,7 +26,7 @@ body {
 }
 
 .customRow > li {
-    border-bottom: solid 1px #f89b33;
+    border-bottom: solid 1px var(--destacado);
     transition: 0.3s all ease-in-out;
 }
 .customRow > li:hover {

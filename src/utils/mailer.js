@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const env = require("../config/env");
 
 let transporter;
 
@@ -15,13 +16,13 @@ const initializeEmail = async () => {
     });
 };
 
-const sendEmail = (email) => {
+const sendEmail = (subject, text) => {
     transporter.sendMail({
-        from: '"Fred Foo 👻" <foo@example.com>', // sender address
-        to: email,
-        subject: "Nuevo usuario ✔",
-        text: "Se ha registrado un nuevo usuario", // plain text body
-        html: "<h1>Nuevo usuario</h1> <p>Se ha registrado un nuevo usuario</p> ", // html body
+        from: "maybell.moen95@ethereal.email", // sender address
+        to: env.ADMIN_EMAIL,
+        subject: subject,
+        text: text,
+        html: text
     });
 };
 

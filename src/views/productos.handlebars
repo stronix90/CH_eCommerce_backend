@@ -3,7 +3,7 @@
 >
     <h5 class="m-0">Bienvenido {{user.name}}</h5>
 
-    <form action="/logout" method="get" class="m-0">
+    <form action="/api/v1/logout" method="get" class="m-0">
         <button type="submit">Cerrar sesión</button>
     </form>
 </div>
@@ -34,30 +34,10 @@
             <div class="mb-3">
                 <input
                     type="hidden"
-                    name="nombre"
-                    id="nombre"
+                    name="name"
+                    id="name"
                     placeholder="Nombre"
                     value={{user.name}}
-                    required
-                />
-            </div>
-            <div class="mb-3">
-                <input
-                    type="hidden"
-                    name="apellido"
-                    id="apellido"
-                    placeholder="Apellido"
-                    value={{user.lastname}}
-                    required
-                />
-            </div>
-            <div class="mb-3">
-                <input
-                    type="hidden"
-                    name="edad"
-                    id="edad"
-                    placeholder="Edad"
-                    value={{user.age}}
                     required
                 />
             </div>

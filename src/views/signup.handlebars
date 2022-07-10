@@ -1,8 +1,8 @@
-<div class="card mt-4 p-3 shadow-lg">
+<div class="card shadow-lgv" style="padding: 2rem 10rem">
     <h1 class="text-center">Registro</h1>
     <form
         id="formRegister"
-        action="/api/register"
+        action="/api/v1/signup"
         method="post"
         class="d-flex align-items-center flex-column"
     >
@@ -51,8 +51,7 @@
             <input
                 type="tel"
                 name="phone"
-                pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
-                placeholder="Número de teléfono"
+                placeholder="+54911xxxxxxxx"
                 required
             />
         </div>

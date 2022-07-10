@@ -2,14 +2,6 @@ const passport = require("passport");
 const { sendEmail } = require("../utils/mailer");
 const authRouter = require("express").Router();
 
-// const requestSucessfull = (req, res) => {
-//     res.status(200).send();
-// };
-
-// const requestError = (req, res) => {
-//     res.status(400).json({ error: err.message });
-// };
-
 authRouter.post(
     "/login",
     passport.authenticate("login", { failWithError: true }),
@@ -22,10 +14,10 @@ authRouter.post(
 );
 
 authRouter.post(
-    "/register",
+    "/signup",
     passport.authenticate("register", { failWithError: true }),
     (req, res, next) => {
-        sendEmail("www.correo.com@gmail.com");
+        sendEmail("Nuevo registro", JSON.stringify(req.user));
         return res.status(200).send({ message: "Logged in" });
     },
     (err, req, res, next) => {
@@ -33,8 +25,12 @@ authRouter.post(
     }
 );
 
-authRouter.get("/logout", (req, res) => {
-    req.logout();
+authRouter.get("/logout", (req, res, next) => {
+    const user = req.user.name || "";
+    req.logout((err) => {
+        if (err) next(err);
+        res.redirect("/logout?name=" + user);
+    });
 });
 
 module.exports = authRouter;

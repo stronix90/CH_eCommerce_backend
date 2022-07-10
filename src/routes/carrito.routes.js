@@ -1,17 +1,19 @@
 const {
   postCart,
   delCart,
-  getProductsInCart,
+  getCart,
   addProductToCart,
   delProductFromCart,
 } = require("../controllers/carrito.controller");
+const { isAuth } = require("../middleware/auth");
 
 const router = require("express").Router();
 
-router.post("/", postCart);
-router.delete("/:id", delCart);
-router.get("/:id/productos", getProductsInCart);
-router.post("/:id/productos/:id_prod", addProductToCart);
-router.delete("/:id/productos/:id_prod", delProductFromCart);
+// /api/v1/carrito
+router.get("/", isAuth, getCart);
+router.post("/", isAuth, postCart);
+router.delete("/:id", isAuth, delCart);
+router.post("/productos/:id_prod", isAuth , addProductToCart);
+router.delete("/productos/:id_prod", isAuth, delProductFromCart);
 
 module.exports = router;

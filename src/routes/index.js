@@ -2,33 +2,18 @@ const router = require("express").Router();
 
 const productosRoutes = require("./productos.routes");
 const carritoRoutes = require("./carrito.routes");
+const orderRoutes = require("./order.routes");
 const authRouter = require("./auth.routes");
-const { isAuth } = require("../middleware/auth");
+const frontRouter = require("./front.routes");
 
-// API
-router.use("/api/productos", productosRoutes);
-router.use("/api/carrito", carritoRoutes);
-router.use("/api/", authRouter);
-
-// RENDERS
-router.get("/login", (req, res) => {
-    res.render("login");
-})
-router.get("/register", (req, res) => {
-    res.render("register");
-})
-
-router.get("/profile", isAuth,  (req, res) => {
-    res.render("profile", { user: req.user });
-})
+router.use("/api/v1/productos", productosRoutes);
+router.use("/api/v1/carrito", carritoRoutes);
+router.use("/api/v1/order", orderRoutes);
+router.use("/api/v1/", authRouter);
+router.use("/", frontRouter);
 
 // ERROR 404
-router.use("*", function (req, res) {
-    res.status(404).json({
-        error: -2,
-        descripcion: `El recurso [${req.method}] ${req.originalUrl} no está implementado`,
-    });
-});
-
+router.use("*", (_, res) =>
+    res.render("404"));
 
 module.exports = router;

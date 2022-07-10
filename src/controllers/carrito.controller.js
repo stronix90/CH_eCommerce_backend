@@ -13,39 +13,38 @@ const delCart = async (req, res) => {
     res.json(response);
 };
 
-const getProductsInCart = async (req, res) => {
-    const { id } = req.params;
+const getCart = async (req, res) => {
+    const email = req.user.email;
+    const response = await cartDao.findByEmail(email);
 
-    const response = await cartDao.find(id);
     if (response?.status_err) res.json(errorHandler("Carrito no encontrado"));
-    else res.json(response?.products);
+    else res.json(response);
 };
 
 const addProductToCart = async (req, res) => {
-    const { id, id_prod } = req.params;
+    const { id_prod } = req.params;
+    const email = req.user.email
 
-    const product = await productsDao.find(id_prod);
-    if (product?.status_err) {
-        console.log("El producto no existe");
-        res.json(errorHandler("El producto no existe"));
-        return;
-    }
+    // Get product
+    const product = await productsDao.findById(id_prod, true);
+    if (product?.status_err) res.json(errorHandler("Producto no encontrado"));
 
-    const response = await cartDao.addProductToCart(id, { ...product, id: id_prod })
+    const response = await cartDao.addProductToCart(email, product)
     res.json(response);
 };
 
 const delProductFromCart = async (req, res) => {
-    const { id, id_prod } = req.params;
+    const { id_prod } = req.params;
+    const cartEmail = req.user.email
 
-    const response = await cartDao.deleteProductFromCart(id, id_prod);
+    const response = await cartDao.deleteProductFromCart(cartEmail, id_prod);
     res.json(response);
 };
 
 module.exports = {
+    getCart,
     postCart,
     delCart,
-    getProductsInCart,
     addProductToCart,
     delProductFromCart,
 };

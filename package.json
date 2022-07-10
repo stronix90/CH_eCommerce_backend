@@ -11,7 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^7.3.0",
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
+    "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
@@ -21,10 +24,10 @@
     "mongoose": "^6.3.3",
     "morgan": "^1.10.0",
     "nodemailer": "^6.7.7",
+    "normalizr": "^3.6.2",
     "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
+    "passport-local": "^1.0.0",
+    "socket.io": "^4.5.1",
+    "twilio": "^3.78.0"
   }
 }
