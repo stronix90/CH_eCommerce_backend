@@ -7,19 +7,13 @@ const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const { engine } = require("express-handlebars");
-const config = require("./config/db");
+const db = require("./config/db");
 
-require("./auth/passport/localAuth");
+require("./config/auth/passport/localAuth");
 require("./utils/mailer");
-
-// Socket
-const { Server: HttpServer } = require("http");
-const { Server: IOServer } = require("socket.io");
 
 // Inicio aplicación
 const app = express();
-const httpServer = new HttpServer(app);
-const io = new IOServer(httpServer);
 
 // Settings
 app.set("port", env.PORT);
@@ -39,7 +33,7 @@ const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 app.use(
     session({
         store: MongoStore.create({
-            mongoUrl: config.mongodb.conn,
+            mongoUrl: db.conn,
             mongoOptions: advancedOptions,
         }),
         secret: "fraseSecretaSt",
@@ -53,30 +47,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use("/", require("./routes"));
+app.use("/", require("./router"));
 
-/*
- *** SOCKET ***
- */
-const { messagesDao } = require("./daos/index");
-let msgArray;
-messagesDao.findAll().then((res) => {
-    msgArray = res;
-});
-
-io.on("connection", async (socket) => {
-    // Mensajes
-    socket.on("getMessages", () => {
-        const normalizedMessages = messagesDao.normalizeMessages(msgArray);
-        socket.emit("inicioMsg", normalizedMessages);
-    });
-
-    socket.on("newMessage", async (newMsg) => {
-        io.sockets.emit("newMessage", newMsg);
-
-        const newMsgWithId = await messagesDao.save(newMsg);
-        msgArray.push(newMsgWithId);
-    });
-});
-
-module.exports = { httpServer, app };
+module.exports = app;

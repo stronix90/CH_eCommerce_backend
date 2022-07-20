@@ -1,19 +1,16 @@
 <div class="card shadow-lgv" style="padding: 2rem 10rem">
     <h1 class="text-center">Registro</h1>
+
     <form
         id="formRegister"
         action="/api/v1/signup"
         method="post"
         class="d-flex align-items-center flex-column"
+        enctype="multipart/form-data"
     >
 
-         <div class="mb-3">
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
-            />
+        <div class="mb-3">
+            <input type="email" name="email" placeholder="Email" required />
         </div>
 
         <div class="mb-3">
@@ -55,7 +52,7 @@
                 required
             />
         </div>
-        
+
         <div class="mb-3">
             <input type="file" name="photo" />
         </div>

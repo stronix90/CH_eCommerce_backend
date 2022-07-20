@@ -1,0 +1,6 @@
+Que se puedan subir una foto de perfil
+Código de área para el teléfono
+La parte de logout no es API REST
+Que funcione el logger
+Container dentro de config? 
+

@@ -1,9 +1,6 @@
 const isAuth = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.redirect("/login");
-    }
+    if (req.isAuthenticated()) return next();
+    else return res.redirect("/login");
 };
 
-module.exports = { isAuth };
+module.exports = isAuth;

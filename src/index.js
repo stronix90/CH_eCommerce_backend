@@ -1,6 +1,5 @@
-const { app, httpServer } = require("./app");
+const { app, httpServer } = require("./socket");
 
-// Connection
 const server = httpServer.listen(app.get("port"), () => {
     console.log(`Servidor ejecutado en puerto ${app.get("port")}`);
 });
