@@ -10,18 +10,17 @@ else CartDao = require("./CartDtoMem");
 class CartServices {
     constructor() {}
 
-    findOneAndDelete = 
-        async (id) => await CartDao.findByIdAndDelete(id);
+    findOneAndDelete = async (id) => await CartDao.findByIdAndDelete(id);
 
-    getCart = 
-        async (id) => new CartDto(await CartDao.getCart(id));
+    getCart = async (id) => new CartDto(await CartDao.getCart(id));
 
-    addProductToCart = 
-        async (id, elem) => new CartDto(await CartDao.addProductToCart(id, elem));
+    prueba = () => "hola";
 
-    deleteProductFromCart = 
-        async (id, elem) => new CartDto( await CartDao.deleteProductFromCart(id, elem));
+    addProductToCart = async (id, elem) =>
+        new CartDto(await CartDao.addProductToCart(id, elem));
 
+    deleteProductFromCart = async (id, elem) =>
+        new CartDto(await CartDao.deleteProductFromCart(id, elem));
 }
 
-module.exports = CartServices
+module.exports = new CartServices();
