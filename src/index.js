@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { app, httpServer } = require("./socket");
 
 const server = httpServer.listen(app.get("port"), () => {

@@ -28,7 +28,7 @@ const chat = new normalizrSchema.Entity("chat", {
 // -----------------------------------------------------
 
 
-const ContainerMongo = require("../../containers/ContainerMongo");
+const ContainerMongo = require("../../container/ContainerMongo");
 
 class MessageSchema extends ContainerMongo {
     constructor() {

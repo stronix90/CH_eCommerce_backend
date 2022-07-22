@@ -2,8 +2,6 @@ const { AppError, httpStatusCodes } = require("../config/error/error");
 
 validateDto = (ajvValidate) => {
     return (req, _, next) => {
-        console.log(req.body)
-        console.log(req.file)
         const valid = ajvValidate(req.body);
 
         if (valid) return next();

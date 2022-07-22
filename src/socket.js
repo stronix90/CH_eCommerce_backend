@@ -10,7 +10,9 @@ const io = new IOServer(httpServer);
 let msgArray;
 
 Message.findAll()
-    .then((res) => (msgArray = res))
+    .then((res) => {
+        msgArray = res.map((msg) => msg._doc)
+    })
     .catch((err) => console.log(err));
 
 io.on("connection", async (socket) => {

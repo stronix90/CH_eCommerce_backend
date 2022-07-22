@@ -1,7 +1,7 @@
 const passport = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
 
-const User = require("../../../components/user/User.model");
+const User = require("../../../components/user/User.services");
 const { AppError, httpStatusCodes } = require("../../error/error");
 
 passport.use(
@@ -25,7 +25,6 @@ passport.use(
 
             try {
                 const createdUser = await User.save(req.body);
-                delete createdUser.password;
                 return done(null, createdUser);
             } catch (error) {
                 return done(
@@ -82,7 +81,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     let user = await User.findById(id);
-    delete user.password;
 
     done(null, user);
 });

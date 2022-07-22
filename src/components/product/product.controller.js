@@ -1,5 +1,5 @@
 const routeHelper = require("../../utils/routeHelper");
-const Product = require("./Product.model");
+const Product = require("./Product.services")
 
 const getProducts = routeHelper(async (req, res) => {
     const { id } = req.params;
