@@ -14,8 +14,6 @@ class CartServices {
 
     getCart = async (id) => new CartDto(await CartDao.getCart(id));
 
-    prueba = () => "hola";
-
     addProductToCart = async (id, elem) =>
         new CartDto(await CartDao.addProductToCart(id, elem));
 
