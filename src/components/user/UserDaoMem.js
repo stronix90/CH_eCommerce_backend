@@ -8,7 +8,6 @@ class UserConstructor extends ContainerMemory {
     }
 
     async saveUser(elem) {
-        console.log('creara un usuario')
         const hash = await bcrypt.hash(elem.password, 10);
         elem.password = hash;
         return await this.save(elem);

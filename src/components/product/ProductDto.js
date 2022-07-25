@@ -1,6 +1,6 @@
 class ProductDto {
     constructor(product) {
-        this._id = product._id;
+        this.id = product._id;
         this.title = product.title;
         this.description = product.description;
         this.code = product.code;
@@ -12,7 +12,7 @@ class ProductDto {
 
 class ProductForCartDto {
     constructor(product) {
-        this._id = product._id;
+        this.id = product._id ||product.id ;
         this.title = product.title;
         this.code = product.code;
         this.price = product.price;

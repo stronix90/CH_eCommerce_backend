@@ -24,10 +24,11 @@ const DOM_drawContainer = (data) => {
 
 const DOM_drawItems = (data) => {
     let items = "";
+    console.log(data);
 
     data?.map((prod) => {
         items += `
-        <li class="row align-items-center my-2" onclick="openProduct('${prod._id}')">
+        <li class="row align-items-center my-2" onclick="openProduct('${prod.id}')">
 
           <div class="col-auto p-2">
             <img

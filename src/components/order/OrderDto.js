@@ -1,5 +1,6 @@
 class OrderDto {
     constructor (order){
+        this.id = order._id;
         this.email = order.email;
         this.products = order.products;
         this.deliveryAddress = order.deliveryAddress;

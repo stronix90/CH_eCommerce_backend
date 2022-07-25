@@ -70,7 +70,7 @@ passport.use(
                     false
                 );
 
-            return done(null, user.id);
+            return done(null, user);
         }
     )
 );
@@ -80,9 +80,12 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-    let user = await User.findById(id);
-
-    done(null, user);
+    try {
+        let user = await User.findById(id);
+        done(null, user);
+    } catch (error) {
+        done(null, null);
+    }
 });
 
 module.exports = { passport };

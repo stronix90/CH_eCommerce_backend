@@ -8,10 +8,12 @@ if (env.PERSISTENCE === "mongo") OrderDao = require("./OrderDaoDb");
 else OrderDao = require("./OrderDaoMem");
 
 class OrderServices {
-    constructor () {}
+    constructor() {}
 
-    save =
-        async (elem) => new OrderDto(await OrderDao.save(elem));
+    save = async (elem) => {
+        const order = await OrderDao.save(elem);
+        return new OrderDto(order);
+    };
 }
 
-module.exports = new OrderServices()
+module.exports = new OrderServices();

@@ -5,12 +5,12 @@ let CartDao;
 if (env.PERSISTENCE === "mongo") CartDao = require("./CartDaoDb");
 // else if
 // ...
-else CartDao = require("./CartDtoMem");
+else CartDao = require("./CartDaoMem");
 
 class CartServices {
     constructor() {}
 
-    findOneAndDelete = async (id) => await CartDao.findByIdAndDelete(id);
+    findOneAndDelete = async (id) => await CartDao.findOneAndDelete(id);
 
     getCart = async (id) => new CartDto(await CartDao.getCart(id));
 

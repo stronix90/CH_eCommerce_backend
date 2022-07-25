@@ -91,16 +91,16 @@ class CartSchema extends ContainerMongo {
                 httpStatusCodes.NOT_FOUND
             );
 
+        // Update total
+        cart.total -=
+            cart.products[index].price * cart.products[index].quantity;
+
         // Remove product from cart
         cart.products.splice(index, 1);
         await this.findOneAndUpdate(cart._id.toString(), {
             ...cart,
             products: cart.products,
         });
-
-        // Update total
-        cart.total -=
-            cart.products[index].price * cart.products[index].quantity;
 
         return cart;
     };

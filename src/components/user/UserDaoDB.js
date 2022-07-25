@@ -30,6 +30,11 @@ class UserConstructor extends ContainerMongo {
     async checkPass(password, encryptedPassword) {
         return await bcrypt.compare(password, encryptedPassword);
     }
+
+    async saveUser(elem) {
+        return await  this.save(elem);
+    }
+
 }
 
 module.exports = new UserConstructor();

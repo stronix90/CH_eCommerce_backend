@@ -39,7 +39,7 @@ const createItemDOM = (items) => {
           
                     <div class="col-2 p-2 text-center">
                         <button onclick="removeProduct('${
-                            prod._id
+                            prod.id
                         }')"><i class="fa fa-trash" style="margin:5px"></i></button>
                     </div>
 

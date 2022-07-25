@@ -9,14 +9,14 @@ class ContainerMemory {
     findById = (_id) => {
         _id *= 1;
 
-        const itemIndex = this.#getIndexByFilter({ _id })
-        return this.elements[itemIndex]
+        const itemIndex = this.#getIndexByFilter({ _id });
+        return this.elements[itemIndex];
     };
 
     findOne = (filter) => {
-        const itemIndex = this.#getIndexByFilter(filter)
-        return this.elements[itemIndex]
-    }
+        const itemIndex = this.#getIndexByFilter(filter);
+        return this.elements[itemIndex];
+    };
 
     findAll = () => this.elements;
 
@@ -32,38 +32,31 @@ class ContainerMemory {
     findByIdAndUpdate = (_id, elem) => {
         _id *= 1;
 
-        const itemIndex = this.#getIndexByFilter({ _id })
-        if (itemIndex === -1) throw new AppError(
-            "Item not found",
-            httpStatusCodes.NOT_FOUND
-        );
+        const itemIndex = this.#getIndexByFilter({ _id });
+        if (itemIndex === -1)
+            throw new AppError("Item not found", httpStatusCodes.NOT_FOUND);
 
         this.elements[itemIndex] = elem;
         return elem;
-    }
-
+    };
 
     findOneAndUpdate = (filter, elem) => {
-        const itemIndex = this.#getIndexByFilter(filter)
+        const itemIndex = this.#getIndexByFilter(filter);
 
-        if (itemIndex === -1) throw new AppError(
-            "Item not found",
-            httpStatusCodes.NOT_FOUND
-        );
+        if (itemIndex === -1)
+            throw new AppError("Item not found", httpStatusCodes.NOT_FOUND);
 
-        this.elements[itemIndex] = elem
-        return elem
-    }
+        this.elements[itemIndex] = elem;
+        return elem;
+    };
 
     findByIdAndDelete = (_id) => {
         _id *= 1;
 
-        const itemIndex = this.#getIndexByFilter({ _id })
+        const itemIndex = this.#getIndexByFilter({ _id });
 
-        if (itemIndex === -1) throw new AppError(
-            "Item not found",
-            httpStatusCodes.NOT_FOUND
-        );
+        if (itemIndex === -1)
+            throw new AppError("Item not found", httpStatusCodes.NOT_FOUND);
 
         this.elements.splice(itemIndex, 1);
 
@@ -71,17 +64,15 @@ class ContainerMemory {
     };
 
     findOneAndDelete = (filter) => {
-        const itemIndex = this.#getIndexByFilter(filter)
+        const itemIndex = this.#getIndexByFilter(filter);
 
-        if (itemIndex === -1) throw new AppError(
-            "Item not found",
-            httpStatusCodes.NOT_FOUND
-        );
+        if (itemIndex === -1)
+            throw new AppError("Item not found", httpStatusCodes.NOT_FOUND);
 
         this.elements.splice(itemIndex, 1);
 
         return true;
-    }
+    };
 
     deleteAll = () => {
         this.elements = [];
@@ -89,14 +80,12 @@ class ContainerMemory {
     };
 
     #getIndexByFilter = (filter) => {
-        return this.elements.findIndex(elem => {
-            return Object.keys(filter).every(key => {
-                console.log(key)
-                console.log(elem[key], filter[key])
-                return filter[key] === elem[key]
-            })
-        })
-    }
+        return this.elements.findIndex((elem) => {
+            return Object.keys(filter).every((key) => {
+                return filter[key] === elem[key];
+            });
+        });
+    };
 }
 
 module.exports = ContainerMemory;
