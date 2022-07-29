@@ -14,26 +14,49 @@ class CantainerMongo {
     findById = async (id) => {
         try {
             const res = await this.coll.findById(id).exec();
+
+            if (!res)
+                throw new AppError(
+                    "Producto no encontrado",
+                    httpStatusCodes.NOT_FOUND
+                );
+
             return res?._doc;
         } catch (error) {
-            throw new AppError(
-                error.message,
-                httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false
-            );
+            if (error.isOperational) throw error;
+            else if (error.path == "_id")
+                throw new AppError(
+                    "Producto no encontrado",
+                    httpStatusCodes.NOT_FOUND
+                );
+            else
+                throw new AppError(
+                    error.message,
+                    httpStatusCodes.INTERNAL_SERVER_ERROR,
+                    false
+                );
         }
     };
 
     findOne = async (filter) => {
         try {
             const res = await this.coll.findOne(filter);
+
+            if (!res)
+                throw new AppError(
+                    "Producto no encontrado",
+                    httpStatusCodes.NOT_FOUND
+                );
+
             return res?._doc;
         } catch (error) {
-            throw new AppError(
-                error.message,
-                httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false
-            );
+            if (error.isOperational) throw error;
+            else
+                throw new AppError(
+                    error.message,
+                    httpStatusCodes.INTERNAL_SERVER_ERROR,
+                    false
+                );
         }
     };
 
@@ -63,13 +86,30 @@ class CantainerMongo {
     };
     findByIdAndUpdate = async (id, elem) => {
         try {
-            return await this.coll.findByIdAndUpdate(id, { $set: elem });
+            const res = await this.coll.findByIdAndUpdate(id, {
+                $set: elem,
+            });
+
+            if (!res)
+                throw new AppError(
+                    "Producto no encontrado",
+                    httpStatusCodes.NOT_FOUND
+                );
+
+            return res?._doc;
         } catch (error) {
-            throw new AppError(
-                error.message,
-                httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false
-            );
+            if (error.isOperational) throw error;
+            else if (error.path == "_id")
+                throw new AppError(
+                    "Producto no encontrado",
+                    httpStatusCodes.NOT_FOUND
+                );
+            else
+                throw new AppError(
+                    error.message,
+                    httpStatusCodes.INTERNAL_SERVER_ERROR,
+                    false
+                );
         }
     };
 
@@ -87,14 +127,20 @@ class CantainerMongo {
 
     findByIdAndDelete = async (id) => {
         try {
-            await this.coll.findOneAndDelete(id);
+            await this.coll.findByIdAndDelete(id);
             return true;
         } catch (error) {
-            throw new AppError(
-                error.message,
-                httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false
-            );
+            if (error.path == "_id")
+                throw new AppError(
+                    "Producto no encontrado",
+                    httpStatusCodes.NOT_FOUND
+                );
+            else
+                throw new AppError(
+                    error.message,
+                    httpStatusCodes.INTERNAL_SERVER_ERROR,
+                    false
+                );
         }
     };
 

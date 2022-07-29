@@ -1,8 +1,15 @@
+const apiUrl = process.env.API_URL || "http://localhost";
+const port = process.env.PORT || 8080;
+const apiVersion = "v1";
+const apiFullPath = `${apiUrl}:${port}/api/${apiVersion}/`;
+
 env = {
     NODE_ENV: process.env.NODE_ENV || "DEV",
     ADMIN_EMAIL: process.env.ADMIN_EMAIL || "www.correo.com@gmail.com",
-    PORT: process.env.PORT || 8080,
-    API_URL: process.env.API_URL || "http://localhost:8080/api/v1/",
-    PERSISTENCE: process.env.PERSISTENCE
+    API_URL: apiUrl,
+    PORT: port,
+    API_VERSION: apiVersion,
+    API_FULL_PATH: apiFullPath,
+    PERSISTENCE: process.env.PERSISTENCE || "mongo",
 };
-module.exports = env
+module.exports = env;

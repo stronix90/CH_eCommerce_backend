@@ -5,8 +5,8 @@ const schema = {
     properties: {
         title: { type: "string", minLength: 2, maxLength: 255 },
         description: { type: "string", minLength: 3, maxLength: 1024 },
-        code: { type: "number" },
-        photo: {
+        code: { type: "string" , minLength: 2, maxLength: 10 },
+        thumbnail: {
             type: "string",
             transform: ["trim", "toLowerCase"],
             pattern: "([a-zA-Z0-9-_.]+\\.(png|jpe?g|gif)$)",
@@ -18,7 +18,7 @@ const schema = {
     additionalProperties: false,
     errorMessage: {
         properties: {
-            photo: "Photo must be a valid image (png, jpg, jpeg, gif)",
+            thumbnail: "Photo must be a valid image (png, jpg, jpeg, gif)",
         },
     },
 };

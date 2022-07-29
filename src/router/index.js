@@ -13,7 +13,7 @@ router.use("/api/v1/", userRoutes);
 router.use("/", frontRouter);
 
 // ERROR 404
-router.use("*", (_, res) => res.render("404"));
+router.use("*", (_, res) => res.status(404).send("404 Not Found"));
 
 // ERROR HANDLING
 router.use((error, req, res, next) => {
