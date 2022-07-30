@@ -11,10 +11,9 @@ const signup = routeHelper((req, res) => {
 });
 
 const logout = routeHelper((req, res) => {
-    const user = req.user.name || "";
     req.logout((err) => {
         if (err) next(err);
-        res.redirect("/logout?name=" + user);
+        return res.status(204).send()
     });
 });
 

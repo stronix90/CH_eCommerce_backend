@@ -19,13 +19,13 @@ router.use("*", (_, res) => res.status(404).send("404 Not Found"));
 router.use((error, req, res, next) => {
     const errorCode = error.httpStatusCodes || error.status || 500;
 
+    console.log(error);
     if (error.status === 401)
         return res.status(errorCode).json({ message: error.message });
 
     if (error.isOperational)
         return res.status(errorCode).json({ message: error.message });
 
-    console.log(error.message, error.stack);
     return res.status(errorCode).json({ message: "Internal server error" });
 });
 

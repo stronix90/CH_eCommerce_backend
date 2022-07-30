@@ -17,7 +17,7 @@ class CantainerMongo {
 
             if (!res)
                 throw new AppError(
-                    "Producto no encontrado",
+                    "Recurso no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
 
@@ -26,14 +26,14 @@ class CantainerMongo {
             if (error.isOperational) throw error;
             else if (error.path == "_id")
                 throw new AppError(
-                    "Producto no encontrado",
+                    "Recurso no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
             else
                 throw new AppError(
                     error.message,
                     httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false
+                    false,
                 );
         }
     };
@@ -44,7 +44,7 @@ class CantainerMongo {
 
             if (!res)
                 throw new AppError(
-                    "Producto no encontrado",
+                    "Recurso no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
 
@@ -55,7 +55,7 @@ class CantainerMongo {
                 throw new AppError(
                     error.message,
                     httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false
+                    false,
                 );
         }
     };
@@ -68,7 +68,7 @@ class CantainerMongo {
             throw new AppError(
                 error.message,
                 httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false
+                false,
             );
         }
     };
@@ -80,7 +80,7 @@ class CantainerMongo {
             throw new AppError(
                 error.message,
                 httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false
+                false,
             );
         }
     };
@@ -92,7 +92,7 @@ class CantainerMongo {
 
             if (!res)
                 throw new AppError(
-                    "Producto no encontrado",
+                    "Recurso no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
 
@@ -101,14 +101,14 @@ class CantainerMongo {
             if (error.isOperational) throw error;
             else if (error.path == "_id")
                 throw new AppError(
-                    "Producto no encontrado",
+                    "Recurso no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
             else
                 throw new AppError(
                     error.message,
                     httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false
+                    false,
                 );
         }
     };
@@ -120,7 +120,7 @@ class CantainerMongo {
             throw new AppError(
                 error.message,
                 httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false
+                false,
             );
         }
     };
@@ -132,14 +132,14 @@ class CantainerMongo {
         } catch (error) {
             if (error.path == "_id")
                 throw new AppError(
-                    "Producto no encontrado",
+                    "Recurso no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
             else
                 throw new AppError(
                     error.message,
                     httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false
+                    false,
                 );
         }
     };

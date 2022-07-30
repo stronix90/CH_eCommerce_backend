@@ -18,10 +18,6 @@ const app = express();
 // Settings
 app.set("port", env.PORT);
 
-app.engine(".handlebars", engine());
-app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "/views"));
-
 // Middlewares
 app.use(express.static("public"));
 app.use(cors());
