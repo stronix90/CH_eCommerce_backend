@@ -18,7 +18,7 @@ userRouter.post(
 
 userRouter.post(
     "/signup",
-    //upload.single("photo"),
+    upload.single("photo"),
     validateDto(signupSchema),
     passport.authenticate("register", { failWithError: true }),
     signup

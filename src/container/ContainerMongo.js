@@ -14,26 +14,18 @@ class CantainerMongo {
     findById = async (id) => {
         try {
             const res = await this.coll.findById(id).exec();
-
-            if (!res)
-                throw new AppError(
-                    "Recurso no encontrado",
-                    httpStatusCodes.NOT_FOUND
-                );
-
             return res?._doc;
         } catch (error) {
-            if (error.isOperational) throw error;
-            else if (error.path == "_id")
+            if (error.path == "_id")
                 throw new AppError(
-                    "Recurso no encontrado",
+                    "El id no es válido",
                     httpStatusCodes.NOT_FOUND
                 );
             else
                 throw new AppError(
                     error.message,
                     httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false,
+                    false
                 );
         }
     };
@@ -41,22 +33,13 @@ class CantainerMongo {
     findOne = async (filter) => {
         try {
             const res = await this.coll.findOne(filter);
-
-            if (!res)
-                throw new AppError(
-                    "Recurso no encontrado",
-                    httpStatusCodes.NOT_FOUND
-                );
-
             return res?._doc;
         } catch (error) {
-            if (error.isOperational) throw error;
-            else
-                throw new AppError(
-                    error.message,
-                    httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false,
-                );
+            throw new AppError(
+                error.message,
+                httpStatusCodes.INTERNAL_SERVER_ERROR,
+                false
+            );
         }
     };
 
@@ -68,10 +51,11 @@ class CantainerMongo {
             throw new AppError(
                 error.message,
                 httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false,
+                false
             );
         }
     };
+
     save = async (elem) => {
         try {
             const newElem = await this.coll.create(elem);
@@ -80,35 +64,28 @@ class CantainerMongo {
             throw new AppError(
                 error.message,
                 httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false,
+                false
             );
         }
     };
+
     findByIdAndUpdate = async (id, elem) => {
         try {
             const res = await this.coll.findByIdAndUpdate(id, {
                 $set: elem,
             });
-
-            if (!res)
-                throw new AppError(
-                    "Recurso no encontrado",
-                    httpStatusCodes.NOT_FOUND
-                );
-
             return res?._doc;
         } catch (error) {
-            if (error.isOperational) throw error;
-            else if (error.path == "_id")
+            if (error.path == "_id")
                 throw new AppError(
-                    "Recurso no encontrado",
+                    "El id no es válido",
                     httpStatusCodes.NOT_FOUND
                 );
             else
                 throw new AppError(
                     error.message,
                     httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false,
+                    false
                 );
         }
     };
@@ -120,7 +97,7 @@ class CantainerMongo {
             throw new AppError(
                 error.message,
                 httpStatusCodes.INTERNAL_SERVER_ERROR,
-                false,
+                false
             );
         }
     };
@@ -132,14 +109,14 @@ class CantainerMongo {
         } catch (error) {
             if (error.path == "_id")
                 throw new AppError(
-                    "Recurso no encontrado",
+                    "El id no es válido",
                     httpStatusCodes.NOT_FOUND
                 );
             else
                 throw new AppError(
                     error.message,
                     httpStatusCodes.INTERNAL_SERVER_ERROR,
-                    false,
+                    false
                 );
         }
     };

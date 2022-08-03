@@ -23,8 +23,11 @@ const addProductToCart = routeHelper(async (req, res) => {
     const { id_prod } = req.params;
     const email = req.user.email;
 
-    const product = new ProductForCartDto(await Product.findById(id_prod));
-    const updatedCart = await Cart.addProductToCart(email, product);
+    const product = await Product.findById(id_prod);
+    if (!product) return res.status(404).send("Producto no encontrado");
+
+    const productForCart = new ProductForCartDto(product);
+    const updatedCart = await Cart.addProductToCart(email, productForCart);
     res.status(200).json(updatedCart);
 });
 

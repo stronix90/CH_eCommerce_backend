@@ -14,11 +14,10 @@ const userGenerator = () => ({
     name: faker.name.firstName(),
     address: faker.address.streetAddress(),
     birthDate: "1990-12-22",
-    phone: faker.phone.phoneNumber("+54911########"),
+    phone: faker.phone.number("+54911########"),
     photo: faker.image.avatar(),
 })
 const user = userGenerator();
-console.log(user)
 
 /*
     *** TEST ***
@@ -33,26 +32,25 @@ describe("Prueba Api V1 de USUARIOS", () => {
             .send(user);
 
         // Verifica
-        expect(response.status).to.eql(201);
-        console.log(response.body);
+        expect(response.status).to.eql(204);
     }).timeout(1000000); // 10 segundos
 
-    // it("2. Se loguea", async () => {
-    //     // Peticion
-    //     const response = await request
-    //         .post("login")
-    //         .set("Accept", "application/json")
-    //         .send({
-    //             email: user.email,
-    //             password: user.password,
-    //         });
+    it("2. Se loguea", async () => {
+        // Peticion
+        const response = await request
+            .post("login")
+            .set("Accept", "application/json")
+            .send({
+                email: user.email,
+                password: user.password,
+            });
 
-    //     // Verifica
-    //     expect(response.status).to.eql(204);
-    // })
+        // Verifica
+        expect(response.status).to.eql(204);
+    })
 
-    // it("Se desloguea", async () => {
-    //     const response = await request.get("logout")
-    //     expect(response.status).to.eql(204)
-    // })
+    it("Se desloguea", async () => {
+        const response = await request.get("logout")
+        expect(response.status).to.eql(204)
+    })
 })

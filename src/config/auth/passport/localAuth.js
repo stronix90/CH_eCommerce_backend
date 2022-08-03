@@ -5,87 +5,81 @@ const User = require("../../../components/user/User.services");
 const { AppError, httpStatusCodes } = require("../../error/error");
 
 passport.use(
-    "register",
-    new LocalStrategy(
-        {
-            usernameField: "email",
-            passwordField: "password",
-            passReqToCallback: true,
-        },
-        async (req, email, password, done) => {
-            let user = await User.findOne({ email });
+  "register",
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
+    async (req, email, password, done) => {
+      try {
+        let user = await User.findOne({ email });
 
-            if (user)
-                return done(
-                    new AppError(
-                        "Email already exists",
-                        httpStatusCodes.BAD_REQUEST
-                    )
-                );
+        if (user)
+          return done(
+            new AppError("Email already exists", httpStatusCodes.BAD_REQUEST)
+          );
 
-            try {
-                const createdUser = await User.save(req.body);
-                return done(null, createdUser);
-            } catch (error) {
-                return done(
-                    new AppError(
-                        "Internal server error",
-                        httpStatusCodes.INTERNAL_SERVER_ERROR
-                    )
-                );
-            }
-        }
-    )
+        const createdUser = await User.save(req.body);
+        return done(null, createdUser);
+      } catch (error) {
+        return done(
+          new AppError(
+            "Internal server error",
+            httpStatusCodes.INTERNAL_SERVER_ERROR
+          )
+        );
+      }
+    }
+  )
 );
 
 passport.use(
-    "login",
-    new LocalStrategy(
-        {
-            usernameField: "email",
-        },
-        async (email, password, done) => {
-            // Find user by email
-            let user = await User.findOne({ email });
-            if (!user)
-                return done(
-                    new AppError(
-                        "Check your email and password",
-                        httpStatusCodes.BAD_REQUEST
-                    ),
-                    false
-                );
+  "login",
+  new LocalStrategy(
+    {
+      usernameField: "email",
+    },
+    async (email, password, done) => {
+      // Find user by email
+      let user = await User.findOne({ email });
+      if (!user)
+        return done(
+          new AppError(
+            "Check your email and password",
+            httpStatusCodes.BAD_REQUEST
+          ),
+          false
+        );
 
-            // Check password
-            const passValidation = await User.checkPass(
-                password,
-                user.password
-            );
-            if (!passValidation)
-                return done(
-                    new AppError(
-                        "Check your email and password",
-                        httpStatusCodes.BAD_REQUEST
-                    ),
-                    false
-                );
+      // Check password
+      const passValidation = await User.checkPass(password, user.password);
+      if (!passValidation)
+        return done(
+          new AppError(
+            "Check your email and password",
+            httpStatusCodes.BAD_REQUEST
+          ),
+          false
+        );
 
-            return done(null, user);
-        }
-    )
+      return done(null, user);
+    }
+  )
 );
 
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+  done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-    try {
-        let user = await User.findById(id);
-        done(null, user);
-    } catch (error) {
-        done(null, null);
-    }
+  try {
+    let user = await User.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(null, null);
+  }
 });
 
 module.exports = { passport };

@@ -83,7 +83,7 @@ class CartSchema extends ContainerMongo {
 
         // Check if product exist inside cart
         const index = cart.products.findIndex(
-            (productInCart) => productInCart._id.toString() == productId
+            (productInCart) => productInCart.id == productId
         );
         if (index < 0)
             throw new AppError(

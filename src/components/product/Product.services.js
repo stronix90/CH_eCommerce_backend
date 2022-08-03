@@ -11,7 +11,8 @@ class ProductServices {
     constructor() {}
 
     findById = async (id) => {
-        return new ProductDto(await ProductDao.findById(id));
+        const product = await ProductDao.findById(id);
+        return product ? new ProductDto(product) : null;
     };
 
     findAll = async () => {
@@ -24,7 +25,8 @@ class ProductServices {
     };
 
     findByIdAndUpdate = async (id, elem) => {
-        return new ProductDto(await ProductDao.findByIdAndUpdate(id, elem));
+        const product = await ProductDao.findByIdAndUpdate(id, elem);
+        return product ? new ProductDto(product) : null;
     };
 
     findByIdAndDelete = async (id) => {

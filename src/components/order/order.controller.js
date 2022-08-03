@@ -9,7 +9,8 @@ const routeHelper = require("../../utils/routeHelper");
 const getOrders = () => {};
 
 const createOrder = routeHelper(async (req, res, next) => {
-    const { deliveryAddress, deliveryDate, email } = req.body;
+    const { deliveryAddress, deliveryDate } = req.body;
+    const email = req.user.email
 
     const cart = await Cart.getCart(email);
 
@@ -21,6 +22,10 @@ const createOrder = routeHelper(async (req, res, next) => {
         total: cart.total,
     };
 
+    if (cart.products.length === 0) {
+        throw new AppError("No hay productos en el carrito", httpStatusCodes.BAD_REQUEST);
+    }
+
     try {
         const savedOrder = await Order.save(order);
 
@@ -31,7 +36,7 @@ const createOrder = routeHelper(async (req, res, next) => {
         //     JSON.stringify(order)
         // );
 
-        res.status(201).json({ orderId: savedOrder.id });
+        res.status(201).json(savedOrder);
     } catch (error) {
         throw new AppError(
             "Error creating order",

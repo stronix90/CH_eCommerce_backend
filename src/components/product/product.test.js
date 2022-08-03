@@ -70,6 +70,20 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
             // Verifica
             expect(response.status).to.eql(201);
         }).timeout(10000); // 10 segundos
+
+        it("4. Intenta (Sin éxito) crear un nuevo producto con datos extras", async () => {
+            // Peticion
+            const maliciousProduct = {
+                ...product,
+                maliciousCode: "delete * from products",
+            };
+            const response = await request
+                .post("productos")
+                .send(maliciousProduct);
+
+            // Verifica
+            expect(response.status).to.eql(401);
+        }).timeout(10000); // 10 segundos
     });
 
     describe("Peticiones GET", () => {
@@ -119,6 +133,14 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
 
             expect(response.status).to.eql(404);
         }).timeout(10000); // 10 segundos
+
+        it("4. Solicita (Sin éxito) un producto inexistente", async () => {
+            const response = await request.get(
+                `productos/000000000000000000000000`
+            );
+
+            expect(response.status).to.eql(404);
+        }).timeout(10000); // 10 segundos
     });
 
     describe("Peticiones PUT", () => {
@@ -161,6 +183,29 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
 
             expect(response.status).to.eql(404);
         }).timeout(10000); // 10 segundos
+
+        it("4. Actualiza (Sin éxito) un producto inexistente", async () => {
+            const response = await request
+                .put(`productos/000000000000000000000000`)
+                .set("Cookie", Cookies)
+                .send(productUpdated);
+
+            expect(response.status).to.eql(404);
+        }).timeout(10000); // 10 segundos
+
+        it("5. Actualiza (Sin éxito) un producto con datos extras", async () => {
+            const maliciousProduct = {
+                ...productUpdated,
+                maliciousCode: "delete * from products",
+            };
+
+            const response = await request
+                .put(`productos/000000000000000000000000`)
+                .set("Cookie", Cookies)
+                .send(maliciousProduct);
+
+            expect(response.status).to.eql(404);
+        }).timeout(10000); // 10 segundos
     });
 
     describe("Peticiones DELETE", () => {
@@ -181,9 +226,22 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
             expect(response.status).to.eql(204);
         }).timeout(10000); // 10 segundos
 
-        it("3. Verifica que el último producto NO exista", async () => {
+        it("3. Elimina (Sin éxito) un producto con ID incorrecto", async () => {
+            const response = await request.get(`productos/12345`);
+
+            expect(response.status).to.eql(404);
+        }).timeout(10000); // 10 segundos
+
+        it("4. Elimina (Sin éxito) un producto inexistente", async () => {
+            const response = await request.get(
+                `productos/000000000000000000000000`
+            );
+
+            expect(response.status).to.eql(404);
+        }).timeout(10000); // 10 segundos
+
+        it("5. Verifica que el último producto NO exista", async () => {
             const response = await request.get(`productos/${productIdCreated}`);
-            const resProduct = response.body;
 
             expect(response.status).to.eql(404);
         }).timeout(10000); // 10 segundos

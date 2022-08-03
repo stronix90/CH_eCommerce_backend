@@ -1,11 +1,12 @@
 const routeHelper = require("../../utils/routeHelper");
-const Product = require("./Product.services")
+const Product = require("./Product.services");
 
 const getProducts = routeHelper(async (req, res) => {
     const { id } = req.params;
 
     const response = id ? await Product.findById(id) : await Product.findAll();
-    res.status(200).json(response);
+    if (response) res.status(200).json(response);
+    else res.status(404).json({ message: "Not found" });
 });
 
 const postProduct = routeHelper(async (req, res) => {
@@ -17,7 +18,8 @@ const putProduct = routeHelper(async (req, res) => {
     const { id } = req.params;
 
     const response = await Product.findByIdAndUpdate(id, req.body);
-    res.status(200).json(response);
+    if(response) res.status(200).json(response)
+    else res.status(404).json({ message: "Not found" });
 });
 
 const delproduct = routeHelper(async (req, res) => {
