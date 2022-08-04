@@ -55,10 +55,11 @@ class CartSchema extends ContainerMongo {
         const cart = await this.getCart(email);
 
         // Check if product exist inside cart
-        const indexInCart = cart.products?.findIndex(
-            (productInCart) =>
-                productInCart._id.toString() == product._id.toString()
-        );
+        const indexInCart = cart.products?.findIndex((productInCart) => {
+            const productInCartId = productInCart.id.toString();
+            const addedProductId = product.id.toString();
+            return productInCartId == addedProductId;
+        });
 
         // Update quantity or add product
         if (indexInCart > -1) cart.products[indexInCart].quantity++;

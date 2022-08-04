@@ -1,13 +1,15 @@
 const env = require("./config/env");
 const cors = require("cors");
 const express = require("express");
-const path = require("path");
 const morgan = require("morgan");
 const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const { engine } = require("express-handlebars");
 const db = require("./config/db");
+const { graphqlHTTP } = require("express-graphql");
+const schema = require("./schema");
+const isAuth = require("./middleware/auth");
+const config = require("./config/env");
 
 require("./config/auth/passport/localAuth");
 require("./utils/mailer");
@@ -43,6 +45,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use("/", require("./router"));
+app.use(
+    `/api/${config.API_VERSION}`,
+    require("../src/components/user/user.routes")
+);
+//app.use(isAuth)
+app.use(
+    "/graphql",
+    graphqlHTTP((req) => ({
+        schema,
+        graphiql: true,
+    }))
+);
 
 module.exports = app;
