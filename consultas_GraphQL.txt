@@ -1,0 +1,63 @@
+== PRODUCTOS ==
+
+> Obtener todos los productos:
+    query{getProducts, {id, title, code, thumbnail, price}}
+
+> Obtener producto por Id
+    query{getProduct(id:"62e3417290329cc2f5775980"), {id, title,description, code, thumbnail, price, stock}}
+
+> Agregar productos
+    mutation{
+        postProduct(product: {
+            title: "HELADERA INVERTER SAMSUNG",
+            description: "No Frost. Cap.bruta 308L/neta 299L. Mono Cooling. Estantes antiaderrames de vidrio templado. EE:A. Luz interion de led. Apertura easy handle. Dispenser de agua. Compresor digital inverter. Gas R600. ",
+            code: "0",
+            thumbnail: "https://images.pexels.com/photos/1084584/pexels-photo-1084584.jpeg",
+            price: 6000,
+            stock: 4
+        }), 
+        {id, title, description}
+    }
+
+> Actualizar productos
+    mutation {
+        putProduct(id: "62eb05ecb1f8dbf675be3fe3", product: {title: "Televisor", description: "Televisor samsung 50'", code: "5000D", price: 85000, stock: 5}) {
+            id
+            title
+            description
+        }
+    }
+
+> Borrar producto
+    mutation{
+    delProduct(id: "62eb05ecb1f8dbf675be3fe3")
+    }
+
+== CART ==
+
+> Obtener carrito
+    query{
+    getCart(email:"st.lunabrian@gmail.com"), {email, total, status, products {
+        id, title, quantity
+    }}
+    }
+
+> Agregar producto a carrito
+    mutation{
+    addProductToCart(email:"st.lunabrian@gmail.com", productId:"62e3417290329cc2f5775980"), {email, products{title, price}}
+    }
+
+> Borrar carrito
+    mutation{
+    delCart(email:"st.lunabrian@gmail.com")
+    }
+
+== ORDER == 
+> Crear orden. Previamente se tuvo que agregar producto al carrito
+    mutation {
+    postOrder(order: {
+        email: "st.lunabrian@gmail.com",
+        deliveryAddress: "Domingo French 100",
+        deliveryDate: "2022-08-01"})
+    {id}
+    }
