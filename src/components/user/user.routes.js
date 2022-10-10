@@ -8,6 +8,7 @@ const loginSchema = require("./login.validation");
 const signupSchema = require("./signup.validation");
 
 const upload = require("../../middleware/multer");
+const isAuth = require("../../middleware/auth");
 
 userRouter.post(
     "/login",
@@ -24,6 +25,6 @@ userRouter.post(
     signup
 );
 
-userRouter.get("/logout", logout);
+userRouter.post("/logout", isAuth , logout);
 
 module.exports = userRouter;

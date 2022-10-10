@@ -13,6 +13,7 @@ class ProductConstructor extends ContainerMemory {
         delete product.description;
         delete product.stock;
         delete product.thumbnail;
+        delete product.category;
 
         return product;
     };

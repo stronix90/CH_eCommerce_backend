@@ -1,8 +1,8 @@
-const env = require("../../config/env");
+const config = require("../../config/config");
 const CartDto = require("./CartDto");
 
 let CartDao;
-if (env.PERSISTENCE === "mongo") CartDao = require("./CartDaoDb");
+if (config.PERSISTENCE === "mongo") CartDao = require("./CartDaoDb");
 // else if
 // ...
 else CartDao = require("./CartDaoMem");
@@ -14,8 +14,8 @@ class CartServices {
 
     getCart = async (id) => new CartDto(await CartDao.getCart(id));
 
-    addProductToCart = async (id, elem) =>
-        new CartDto(await CartDao.addProductToCart(id, elem));
+    addProductToCart = async (id, elem, qty) =>
+        new CartDto(await CartDao.addProductToCart(id, elem, qty));
 
     deleteProductFromCart = async (id, elem) =>
         new CartDto(await CartDao.deleteProductFromCart(id, elem));

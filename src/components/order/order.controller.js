@@ -1,12 +1,13 @@
+const config = require("../../config/config")
+
 const Order = require("./Order.services");
 const Cart = require("../cart/Cart.services");
 
-const { sendEmail } = require("../../utils/mailer");
+const sendEmail = require("../../utils/mailer");
 const { AppError, httpStatusCodes } = require("../../config/error/error");
 const routeHelper = require("../../utils/routeHelper");
-//const sendSMS = require("../../utils/sms");
 
-const getOrders = () => {};
+const getOrders = () => { };
 
 const createOrder = routeHelper(async (req, res, next) => {
     const { deliveryAddress, deliveryDate, email } = req.body;
@@ -26,10 +27,28 @@ const createOrder = routeHelper(async (req, res, next) => {
 
         await Cart.findOneAndDelete({ email });
 
-        // sendEmail(
-        //     `Nuevo pedido de ${req.user.name} - ${email}`,
-        //     JSON.stringify(order)
-        // );
+        // Email to customer
+        try {
+            sendEmail(
+                req.user.email,
+                "eCommerce shop - Compra registrada",
+                JSON.stringify(order)
+            );
+        } catch (error) {
+            console.log(error);
+        }
+
+        // Email to admin
+        try {
+            sendEmail(
+                config.ADMIN_EMAIL,
+                `Nuevo pedido de ${req.user.name}`,
+                JSON.stringify(order)
+            );
+
+        } catch (error) {
+            console.log(error);
+        }
 
         res.status(201).json({ orderId: savedOrder.id });
     } catch (error) {

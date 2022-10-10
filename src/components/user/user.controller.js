@@ -1,20 +1,32 @@
 const routeHelper = require("../../utils/routeHelper");
-const { sendEmail } = require("../../utils/mailer");
 
-const login = routeHelper((_, res) => {
-    return res.status(204).send();
+const login = routeHelper((req, res) => {
+    const { password, ...data } = req.user;
+    return res.status(200).send(data);
 });
 
 const signup = routeHelper((req, res) => {
-    // sendEmail("Nuevo registro", JSON.stringify(req.user));
+
+    // Email to admin
+    try {
+        sendEmail(
+            config.ADMIN_EMAIL,
+            `Nuevo registro`,
+            JSON.stringify(req.user)
+        );
+
+    } catch (error) {
+        console.log(error);
+    }
+
     return res.status(204).send();
 });
 
 const logout = routeHelper((req, res) => {
-    const user = req.user.name || "";
+
     req.logout((err) => {
         if (err) next(err);
-        res.redirect("/logout?name=" + user);
+        return res.status(204).send();
     });
 });
 

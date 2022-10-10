@@ -1,5 +1,7 @@
+const config = require("./config");
+
 const db = {
-    conn: "mongodb+srv://desafioCoder:desafioCoder@cluster0.t7sf8.mongodb.net/coder?retryWrites=true&w=majority",
+    conn: config.DB,
     options: {
         useNewUrlParse: true,
         useUnifiedTopology: true,

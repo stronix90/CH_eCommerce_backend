@@ -3,31 +3,6 @@ const { Schema } = mongoose;
 
 const util = require("util");
 
-const {
-    normalize,
-    schema: normalizrSchema,
-} = require("normalizr");
-
-// --- Normalizr Schemas ------------------------------
-const userSchema = new normalizrSchema.Entity(
-    "user",
-    {},
-    {
-        idAttribute: "email",
-    }
-);
-const messageSchema = new normalizrSchema.Entity(
-    "message",
-    { author: userSchema },
-    { idAttribute: "_id" }
-);
-
-const chat = new normalizrSchema.Entity("chat", {
-    messages: [messageSchema],
-});
-// -----------------------------------------------------
-
-
 const ContainerMongo = require("../../container/ContainerMongo");
 
 class MessageSchema extends ContainerMongo {
@@ -57,19 +32,6 @@ class MessageSchema extends ContainerMongo {
     print(objeto) {
         console.log(util.inspect(objeto, false, 12, true));
     }
-
-    normalizeMessages = (messages) => {
-        const formattedMessages = { id: 1000, messages };
-        const normalizedData = normalize(formattedMessages, chat);
-
-        const originalSize = JSON.stringify(messages).length;
-        const normalizedSize = JSON.stringify(normalizedData).length;
-
-        return {
-            savedSpace: (normalizedSize * 100) / originalSize,
-            messages: normalizedData,
-        };
-    };
 }
 
 module.exports = new MessageSchema()

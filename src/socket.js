@@ -4,8 +4,22 @@ const app = require("./app");
 
 const Message = require("./components/messages/Message.model");
 
+// ****************************************
+// Cors
+var whitelist = ['http://localhost:3000', ]
+var corsOptions = {
+    credentials: true,
+    origin: function(origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  }
+// ****************************************
 const httpServer = new HttpServer(app);
-const io = new IOServer(httpServer);
+const io = new IOServer(httpServer,{cors: corsOptions});
 
 let msgArray;
 
@@ -17,8 +31,7 @@ Message.findAll()
 
 io.on("connection", async (socket) => {
     socket.on("getMessages", () => {
-        const normalizedMessages = Message.normalizeMessages(msgArray);
-        socket.emit("inicioMsg", normalizedMessages);
+        socket.emit("inicioMsg", msgArray);
     });
 
     socket.on("newMessage", async (newMsg) => {

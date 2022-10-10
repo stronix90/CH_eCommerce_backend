@@ -13,8 +13,9 @@ const schema = {
         },
         price: { type: "number" },
         stock: { type: "number" },
+        category: { type: "string", minLength: 2, maxLength: 255 },
     },
-    required: ["title", "description", "code", "price", "stock"],
+    required: ["title", "description", "code", "price", "stock", "category"],
     additionalProperties: false,
     errorMessage: {
         properties: {

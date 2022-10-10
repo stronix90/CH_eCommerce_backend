@@ -31,18 +31,19 @@ const schema = {
             pattern:
                 "^((\\+54\\s?)?(\\s?9\\s?)?\\d{2,3}[\\s-]?\\d{3,4}-?\\d{3,4}|\\d{10,11}|(\\d{3,4}[\\s-]){1,2}\\d{3,4})$",
         },
-        photo: {
-            type: "string",
-            transform: ["trim", "toLowerCase"],
-            pattern: "([a-zA-Z0-9-_.]+\\.(png|jpe?g|gif)$)",
-        },
+        photo: { type: "string"},
+        // photo: {
+        //     type: "string",
+        //     transform: ["trim", "toLowerCase"],
+        //     pattern: "([a-zA-Z0-9-_.]+\\.(png|jpe?g|gif)$)",
+        // },
     },
     required: ["email", "password", "name", "address", "birthDate", "phone"],
     errorMessage: {
         properties: {
             password:
                 "Password must be at least 8 characters long and contain at least one number, one lowercase and one uppercase letter",
-            photo: "Photo must be a valid image (png, jpg, jpeg, gif)",
+            // photo: "Photo must be a valid image (png, jpg, jpeg, gif)",
             phone: "Phone must be a valid phone number",
             birthDate:
                 "Please enter a valid birth date (YYYY-MM-DD) (14 years old or older)",

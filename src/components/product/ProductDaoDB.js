@@ -15,6 +15,7 @@ class ProductSchema extends ContainerMongo {
                     thumbnail: String,
                     price: { type: Number, required: true },
                     stock: { type: Number, required: true },
+                    category: { type: String, required: true },
                 },
                 {
                     versionKey: false,
@@ -25,7 +26,7 @@ class ProductSchema extends ContainerMongo {
 
     findByIdForCart = async (id) => {
         const product = await this.coll.findById(id).select(
-            "-description -stock -thumbnail "
+            "-description -stock -thumbnail -category"
         );
         return product?._doc;
     };

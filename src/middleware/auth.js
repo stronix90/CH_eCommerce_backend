@@ -3,4 +3,4 @@ const isAuth = (req, res, next) => {
     else return res.status(401).send()
 };
 
-module.exports = isAuth;
+module.exports = isAuth; 

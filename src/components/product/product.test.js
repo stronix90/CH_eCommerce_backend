@@ -1,8 +1,8 @@
-const env = require("../../config/env");
+const config = require("../../config/config");
 const { faker } = require("@faker-js/faker");
 faker.locale = "es_MX";
 
-const request = require("supertest")(env.API_FULL_PATH);
+const request = require("supertest")(config.API_FULL_PATH);
 const expect = require("chai").expect;
 
 /*
@@ -17,6 +17,7 @@ const productGenerator = () => {
             "https://loremflickr.com/cache/resized/65535_51821425620_7bde15ac44_c_640_480_nofilter.jpg",
         price: parseFloat(faker.commerce.price()),
         stock: parseInt(faker.random.numeric()),
+        category: faker.commerce.department(),
     };
 };
 const product = productGenerator();
@@ -53,7 +54,7 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
             Cookies = response.headers["set-cookie"].pop().split(";")[0];
 
             // Verifica
-            expect(response.status).to.eql(204);
+            expect(response.status).to.eql(200);
         }).timeout(10000); // 10 segundos
 
         it("3. Intenta (Con éxito) crear un nuevo producto estando logueado", async () => {
@@ -90,6 +91,7 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
                     "code",
                     "price",
                     "stock",
+                    "category",
                 ]);
             }
             expect(resProducts[resProducts.length - 1]).to.deep.include(
@@ -110,6 +112,7 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
                 "code",
                 "price",
                 "stock",
+                "category",
             ]);
             expect(resProduct).to.deep.include(product);
         }).timeout(10000); // 10 segundos
@@ -149,6 +152,7 @@ describe("Prueba Api V1 de PRODUCTOS", () => {
                 "code",
                 "price",
                 "stock",
+                "category",
             ]);
             expect(resProduct).to.deep.include(productUpdated);
         }).timeout(10000); // 10 segundos

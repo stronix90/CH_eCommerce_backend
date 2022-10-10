@@ -13,6 +13,7 @@ const productSchema = require("../product/product.validation");
 
 
 router.get("/:id?", getProducts);
+router.get("/category/:category?", getProducts);
 router.post("/", isAuth, validateDto(productSchema) ,postProduct);
 router.put("/:id", isAuth, putProduct);
 router.delete("/:id", isAuth, delproduct);

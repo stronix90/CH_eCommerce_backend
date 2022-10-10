@@ -1,8 +1,8 @@
-const env = require("../../config/env");
+const config = require("../../config/config");
 const OrderDto = require("./OrderDto");
 
 let OrderDao;
-if (env.PERSISTENCE === "mongo") OrderDao = require("./OrderDaoDb");
+if (config.PERSISTENCE === "mongo") OrderDao = require("./OrderDaoDb");
 // else if
 // ...
 else OrderDao = require("./OrderDaoMem");

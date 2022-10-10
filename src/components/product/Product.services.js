@@ -1,8 +1,8 @@
-const env = require("../../config/env");
+const config = require("../../config/config");
 const ProductDto = require("./ProductDto");
 
 let ProductDao;
-if (env.PERSISTENCE === "mongo") ProductDao = require("./ProductDaoDB");
+if (config.PERSISTENCE === "mongo") ProductDao = require("./ProductDaoDB");
 // else if
 // ...
 else ProductDao = require("./ProductDaoMem");
@@ -14,8 +14,8 @@ class ProductServices {
         return new ProductDto(await ProductDao.findById(id));
     };
 
-    findAll = async () => {
-        const productsList = await ProductDao.findAll();
+    findAll = async (filter) => {
+        const productsList = await ProductDao.findAll(filter);
         return productsList?.map((product) => new ProductDto(product));
     };
 

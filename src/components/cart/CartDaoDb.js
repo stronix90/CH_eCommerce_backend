@@ -43,29 +43,33 @@ class CartSchema extends ContainerMongo {
     }
 
     getCart = async (email) => {
-        const cart = await this.findOne({ email });
-        if (cart) return cart;
-
-        const newCart = await this.save({ email });
-        return newCart;
+        try {
+            return await this.findOne({ email });
+        } catch (error) {
+            const newCart = await this.save({ email });
+            return newCart;
+        }
     };
 
-    addProductToCart = async (email, product) => {
+    addProductToCart = async (email, product, qty) => {
         // Get cart
         const cart = await this.getCart(email);
 
         // Check if product exist inside cart
         const indexInCart = cart.products?.findIndex(
-            (productInCart) =>
-                productInCart._id.toString() == product._id.toString()
+            (productInCart) => productInCart.id == product.id
         );
 
         // Update quantity or add product
-        if (indexInCart > -1) cart.products[indexInCart].quantity++;
-        else cart.products.push({ ...product, quantity: 1 });
-
-        // Update total
-        cart.total += product.price;
+        if (indexInCart > -1) {
+            cart.total +=
+            (qty - cart.products[indexInCart].quantity) *
+            cart.products[indexInCart].price;
+            cart.products[indexInCart].quantity = qty;
+        } else {
+            cart.total += product.price * qty;
+            cart.products.push({ ...product, quantity: qty });
+        }
 
         // Save cart
         await this.findByIdAndUpdate(cart._id, {
@@ -83,7 +87,7 @@ class CartSchema extends ContainerMongo {
 
         // Check if product exist inside cart
         const index = cart.products.findIndex(
-            (productInCart) => productInCart._id.toString() == productId
+            (productInCart) => productInCart.id == productId
         );
         if (index < 0)
             throw new AppError(
@@ -97,7 +101,7 @@ class CartSchema extends ContainerMongo {
 
         // Remove product from cart
         cart.products.splice(index, 1);
-        await this.findOneAndUpdate(cart._id.toString(), {
+        await this.findByIdAndUpdate(cart._id, {
             ...cart,
             products: cart.products,
         });

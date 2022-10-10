@@ -1,12 +1,13 @@
 const isAuth = require("../../middleware/auth");
-const sendSMS = require("../../utils/sms");
 const axios = require('axios').default;
 
 
 const frontRouter = require("express").Router();
 
 // Homepage
-frontRouter.get("/", (_, res) => res.redirect("/productos"));
+frontRouter.get("/", (_, res) => {
+    res.redirect("/productos")
+})
 
 // Authentication
 frontRouter.get("/login", (_, res) =>

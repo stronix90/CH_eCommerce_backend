@@ -1,9 +1,9 @@
-const env = require("../../config/env");
+const config = require("../../config/config");
 const UserDto = require("./UserDto");
 
 let UserDao;
-if (env.PERSISTENCE === "mongo") UserDao = require("./UserDaoDB");
-// else if (env.PERSISTENCE === "memory") UserDao = require("./UserDaoMem");
+if (config.PERSISTENCE === "mongo") UserDao = require("./UserDaoDB");
+// else if (config.PERSISTENCE === "memory") UserDao = require("./UserDaoMem");
 else UserDao = require("./UserDaoMem");
 
 class UserServices {

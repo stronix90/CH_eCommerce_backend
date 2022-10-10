@@ -2,11 +2,16 @@ const routeHelper = require("../../utils/routeHelper");
 const Product = require("./Product.services")
 
 const getProducts = routeHelper(async (req, res) => {
-    const { id } = req.params;
+    const id = req.params.id;
+    const category = req.params.category;
 
-    const response = id ? await Product.findById(id) : await Product.findAll();
+    let response
+    if (id) response = await Product.findById(id);
+    else if (category) response = await Product.findAll({ category });
+    else response = await Product.findAll();
+
     res.status(200).json(response);
-});
+})
 
 const postProduct = routeHelper(async (req, res) => {
     const response = await Product.save(req.body);

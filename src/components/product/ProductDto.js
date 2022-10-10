@@ -7,6 +7,7 @@ class ProductDto {
         this.thumbnail = product.photo || product.thumbnail;
         this.price = product.price;
         this.stock = product.stock;
+        this.category = product.category;
     }
 }
 

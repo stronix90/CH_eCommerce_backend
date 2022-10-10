@@ -1,4 +1,4 @@
-const env = require("./config/env");
+const config = require("./config/config");
 const cors = require("cors");
 const express = require("express");
 const path = require("path");
@@ -16,7 +16,7 @@ require("./utils/mailer");
 const app = express();
 
 // Settings
-app.set("port", env.PORT);
+app.set("port", config.PORT);
 
 app.engine(".handlebars", engine());
 app.set("view engine", "handlebars");
@@ -24,7 +24,23 @@ app.set("views", path.join(__dirname, "/views"));
 
 // Middlewares
 app.use(express.static("public"));
+
+// Cors
+var whitelist = ['http://localhost:3000' /** other domains if any */ ]
+var corsOptions = {
+  credentials: true,
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+//app.use(cors(corsOptions));
 app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("tiny"));
@@ -36,10 +52,10 @@ app.use(
             mongoUrl: db.conn,
             mongoOptions: advancedOptions,
         }),
-        secret: "fraseSecretaSt",
+        secret: config.SECRET,
         resave: false,
         saveUninitialized: false,
-        cookie: { maxAge: 1000 * 60 * 60 },
+        cookie: { maxAge: config.SESSION_TIME },
     })
 );
 

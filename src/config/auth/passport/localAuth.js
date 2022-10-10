@@ -13,26 +13,28 @@ passport.use(
             passReqToCallback: true,
         },
         async (req, email, password, done) => {
-            let user = await User.findOne({ email });
 
-            if (user)
+            try {
+                let user = await User.findOne({ email });
                 return done(
                     new AppError(
                         "Email already exists",
                         httpStatusCodes.BAD_REQUEST
                     )
                 );
-
-            try {
-                const createdUser = await User.save(req.body);
-                return done(null, createdUser);
-            } catch (error) {
-                return done(
-                    new AppError(
-                        "Internal server error",
-                        httpStatusCodes.INTERNAL_SERVER_ERROR
-                    )
-                );
+            }
+            catch (error) {
+                try {
+                    const createdUser = await User.save(req.body);
+                    return done(null, createdUser);
+                } catch (error) {
+                    return done(
+                        new AppError(
+                            "Internal server error",
+                            httpStatusCodes.INTERNAL_SERVER_ERROR
+                        )
+                    );
+                }
             }
         }
     )
@@ -46,16 +48,33 @@ passport.use(
         },
         async (email, password, done) => {
             // Find user by email
-            let user = await User.findOne({ email });
-            if (!user)
-                return done(
+            let user
+            try {
+                user = await User.findOne({ email });
+
+            } catch (error) {
+                if (error.httpStatusCodes === 404) return done(
                     new AppError(
                         "Check your email and password",
-                        httpStatusCodes.BAD_REQUEST
-                    ),
-                    false
-                );
+                        httpStatusCodes.BAD_REQUEST,
+                        false)
+                )
+                else
+                    return done(
+                        new AppError(
+                            "Internal server error",
+                            httpStatusCodes.INTERNAL_SERVER_ERROR
+                        )
+                    );
+            }
 
+            if (!user) return done(
+                new AppError(
+                    "Check your email and password",
+                    httpStatusCodes.BAD_REQUEST,
+                    false)
+            )
+ 
             // Check password
             const passValidation = await User.checkPass(
                 password,

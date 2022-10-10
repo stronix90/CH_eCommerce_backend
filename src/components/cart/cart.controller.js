@@ -22,23 +22,20 @@ const getCart = routeHelper(async (req, res) => {
 const addProductToCart = routeHelper(async (req, res) => {
     const { id_prod } = req.params;
     const email = req.user.email;
+    const qty = req.body.qty || 0;
 
-    const product = new ProductForCartDto(await Product.findById(id_prod));
-    const updatedCart = await Cart.addProductToCart(email, product);
-    res.status(200).json(updatedCart);
-});
-
-const delProductFromCart = routeHelper(async (req, res) => {
-    const { id_prod } = req.params;
-    const cartEmail = req.user.email;
-
-    const updatedCart = await Cart.deleteProductFromCart(cartEmail, id_prod);
-    res.status(200).json(updatedCart);
+    if (qty === 0) {
+        const updatedCart = await Cart.deleteProductFromCart( email, id_prod );
+        res.status(200).json(updatedCart);
+    } else {
+        const product = new ProductForCartDto(await Product.findById(id_prod));
+        const updatedCart = await Cart.addProductToCart(email, product, qty);
+        res.status(200).json(updatedCart);
+    }
 });
 
 module.exports = {
     getCart,
     delCart,
     addProductToCart,
-    delProductFromCart,
 };

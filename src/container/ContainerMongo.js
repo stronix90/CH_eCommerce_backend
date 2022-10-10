@@ -3,7 +3,8 @@ const dbConfig = require("../config/db");
 const { AppError, httpStatusCodes } = require("../config/error/error");
 
 (async () => {
-    await mongoose.connect(dbConfig.conn);
+    const conn = await mongoose.connect(dbConfig.conn);
+    console.log("Connected to MongoDB", conn.connection.host);
 })();
 
 class CantainerMongo {
@@ -17,7 +18,7 @@ class CantainerMongo {
 
             if (!res)
                 throw new AppError(
-                    "Producto no encontrado",
+                    "findById Producto no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
 
@@ -26,7 +27,7 @@ class CantainerMongo {
             if (error.isOperational) throw error;
             else if (error.path == "_id")
                 throw new AppError(
-                    "Producto no encontrado",
+                    "findById2 Producto no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
             else
@@ -44,7 +45,7 @@ class CantainerMongo {
 
             if (!res)
                 throw new AppError(
-                    "Producto no encontrado",
+                    "findOne Producto no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
 
@@ -60,9 +61,9 @@ class CantainerMongo {
         }
     };
 
-    findAll = async () => {
+    findAll = async (filter) => {
         try {
-            const res = await this.coll.find();
+            const res = await this.coll.find(filter);
             return res;
         } catch (error) {
             throw new AppError(
@@ -92,7 +93,7 @@ class CantainerMongo {
 
             if (!res)
                 throw new AppError(
-                    "Producto no encontrado",
+                    "findByIdAndUpdate Producto no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
 
@@ -101,7 +102,7 @@ class CantainerMongo {
             if (error.isOperational) throw error;
             else if (error.path == "_id")
                 throw new AppError(
-                    "Producto no encontrado",
+                    "findByIdAndUpdate 2 Producto no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
             else
@@ -132,7 +133,7 @@ class CantainerMongo {
         } catch (error) {
             if (error.path == "_id")
                 throw new AppError(
-                    "Producto no encontrado",
+                    "findByIdAndDelete Producto no encontrado",
                     httpStatusCodes.NOT_FOUND
                 );
             else
