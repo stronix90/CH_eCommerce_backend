@@ -3,25 +3,25 @@
 Backend desarrollado en NodeJS como proyecto final de curso dictado por CoderHouse.
 Consiste en una API RESTFUL con los siguientes endpoint:
 - Productos
- - Obtener un producto por ID
- - Obtener productos por categoria
- - Obtener todos los productos
- - Crear producto
- - Actualizar producto
- - Borrar producto
+    - Obtener un producto por ID
+    - Obtener productos por categoria
+    - Obtener todos los productos
+    - Crear producto
+    - Actualizar producto
+    - Borrar producto
 - Carrito
- - Insertar producto dentro de carrito
- - Obtener carrito
- - Borrar carrito
+    - Insertar producto dentro de carrito
+    - Obtener carrito
+    - Borrar carrito
  
 - Orden de compra
- - Obtener ordenes de compra
- - Crear orden de compra
+    - Obtener ordenes de compra
+    - Crear orden de compra
  
 - Usuarios
- - Ingresar
- - Registrarse
- - Salir
+    - Ingresar
+    - Registrarse
+    - Salir
  
 Además cuenta con un chat funcionando con webSocket.
 
